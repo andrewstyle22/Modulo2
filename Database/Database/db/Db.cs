@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Database
 {
-    public class Db
+    public static class Db
     {
-        SqlConnection conexion = null;
+        static SqlConnection conexion = null;
 
-        public Db()
+        public static void Conectar()
         {
             conexion = new SqlConnection();
             try
@@ -39,7 +39,7 @@ namespace Database
             }
         }
 
-        //public void Conectar()
+        //public static void Conectar()
         //{
         //    conexion = new SqlConnection();
         //    try
@@ -66,12 +66,12 @@ namespace Database
         //    }
         //}
 
-        public bool EstaLaConexionAbierta()
+        public static bool EstaLaConexionAbierta()
         {
             return conexion.State == ConnectionState.Open;
         }
 
-        public void Desconectar()
+        public static void Desconectar()
         {
             if (conexion != null)
             {
@@ -86,7 +86,7 @@ namespace Database
             }
         }
 
-        public List<Usuario> DamelosUsuarios()
+        public static List<Usuario> DamelosUsuarios()
         {
             // string[] usuarios = new string[45];
             List<Usuario> usuarios = null;
@@ -129,7 +129,7 @@ namespace Database
             return usuarios;
         }
 
-        public void InsertarUsuario(Usuario usuario)
+        public static void InsertarUsuario(Usuario usuario)
         {
             string consultaSQL = @"INSERT INTO Users (
                                                         email
@@ -158,7 +158,7 @@ namespace Database
             comando.ExecuteNonQuery();
         }
 
-        public void eliminarUsuario(int hiddenId)
+        public static void eliminarUsuario(int hiddenId)
         {
             string consultaSQL = @"DELETE FROM Users WHERE hiddenId="+hiddenId+";";
             SqlCommand comando = new SqlCommand(consultaSQL, conexion);
@@ -170,7 +170,7 @@ namespace Database
             }
         }
 
-        public void eliminarUsuarioPorEmail(string email)
+        public static void eliminarUsuarioPorEmail(string email)
         {
             string consultaSQL = @"DELETE FROM Users WHERE email='" + email + "';";
             SqlCommand comando = new SqlCommand(consultaSQL, conexion);
@@ -184,7 +184,7 @@ namespace Database
             }
         }
 
-        public void actualizarUsuarios(Usuario usuario)
+        public static void actualizarUsuarios(Usuario usuario)
         {
             string consultaSQL = @"UPDATE dbo.Users SET ";
                                                 consultaSQL += "password ='" + usuario.password + "'";

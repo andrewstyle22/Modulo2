@@ -9,10 +9,10 @@ namespace Database
         {
             Console.WriteLine("Conectado a al base de datos");
 
-            Db conectar = new Db();
+            Db.Conectar();
             //conectar.Conectar();
             Usuario nuevoUsuario = null;
-            if (conectar.EstaLaConexionAbierta())
+            if (Db.EstaLaConexionAbierta())
             {
                 nuevoUsuario = new Usuario()
                 {
@@ -29,7 +29,7 @@ namespace Database
                     isAdmin = false
                 };
                 //conectar.InsertarUsuario(nuevoUsuario);
-                List<Usuario> usuarios = conectar.DamelosUsuarios();
+                List<Usuario> usuarios = Db.DamelosUsuarios();
                 usuarios.ForEach(usuario =>
                 {
                     Console.WriteLine("Nombre: " + usuario.firstName + " " + usuario.lastName + 
@@ -49,8 +49,8 @@ namespace Database
                 //hiddenId = 0,
                 //id = "23j3232",
                 email = "lopezsss@hotmail.com",
-                password = "99999",
-                firstName = "luis",
+                password = "555555",
+                firstName = "Aaron",
                 lastName = "andrade",
                 photoUrl = "wwww.facebook.com",
                 searchPreferences = "",
@@ -59,9 +59,8 @@ namespace Database
                 isAdmin = true
             };
             //nuevoUsuario2.firstName = "nuevo nombre"; otra forma de añadir
-            conectar.actualizarUsuarios(nuevoUsuario2);
-            conectar.Desconectar();
-            conectar = null;
+            Db.actualizarUsuarios(nuevoUsuario2);
+            Db.Desconectar();
             Console.ReadKey();
         }
     }

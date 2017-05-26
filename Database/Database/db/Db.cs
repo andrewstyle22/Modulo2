@@ -69,22 +69,16 @@ namespace Database
 
         public bool EstaLaConexionAbierta()
         {
-            if(conexion.State == ConnectionState.Open)
-            {
-                return true;
-            }else
-            {
-                return false;
-            }
+            return conexion.State == ConnectionState.Open;
         }
 
         public void Desconectar()
         {
-            Console.WriteLine("Nombre de la base de datos " + conexion.Database.ToString());
             if (conexion != null)
             {
                 if (conexion.State != ConnectionState.Closed)
                 {
+                    Console.WriteLine("Nombre de la base de datos " + conexion.Database.ToString());
                     conexion.Close();
                     Console.WriteLine("Conexión cerrada con éxito");
                 }
@@ -103,15 +97,25 @@ namespace Database
 
             //usuarios = new Usuario[reader.RecordsAffected];
             usuarios = new List<Usuario>();
-
            // int numeroDeUsuarios = 0;
             while (reader.Read())
             {
                 usuarios.Add(new Usuario()
                 {
+                    //int.TryParse(reader["hiddenId"].ToString(), out hiddenId),
+                    hiddenId = int.Parse(reader["hiddenId"].ToString()),
+                    id = reader["id"].ToString(),
+                    email = reader["email"].ToString(),
+                    password = reader["password"].ToString(),
                     firstName = reader["firstName"].ToString(),
-                    lastName = reader["lastName"].ToString()
+                    lastName = reader["lastName"].ToString(),
+                    photoUrl = reader["photoUrl"].ToString(),
+                    searchPreferences = reader["searchPreferences"].ToString(),
+                    status = bool.Parse(reader["status"].ToString()),
+                    deleted = (bool)(reader["deleted"]),
+                    isAdmin = Convert.ToBoolean(reader["isAdmin"])
                 });
+
                 //esto es igual
                 //usuarios[numeroDeUsuarios] = new Usuario()
                 //{
@@ -122,7 +126,87 @@ namespace Database
                 //numeroDeUsuarios++;
                 // Console.WriteLine("Nombre: " + reader["firstName"]);
             }
+            reader.Close();
             return usuarios;
+        }
+
+        public void InsertarUsuario(Usuario usuario)
+        {
+            string consultaSQL = @"INSERT INTO Users (
+                                                        email
+                                                       ,password
+                                                       ,firstName
+                                                       ,lastName
+                                                       ,photoUrl
+                                                       ,searchPreferences
+                                                       ,status
+                                                       ,deleted
+                                                       ,isAdmin
+                                                       )
+                                             VALUES (";
+                                                consultaSQL += "'" + usuario.email + "'";
+                                                consultaSQL += ",'" + usuario.password + "'";
+                                                consultaSQL += ",'" + usuario.firstName + "'";
+                                                consultaSQL += ",'" + usuario.lastName + "'";
+                                                consultaSQL += ",'" + usuario.photoUrl + "'";
+                                                consultaSQL += ",'" + usuario.searchPreferences + "'";
+                                                consultaSQL += "," + (usuario.status ? "1" : "0");
+                                                consultaSQL += "," + (usuario.deleted ? "1" : "0");
+                                                consultaSQL += "," + (usuario.isAdmin ? "1" : "0");
+                                                consultaSQL += ");";
+
+            SqlCommand comando = new SqlCommand(consultaSQL, conexion);
+            comando.ExecuteNonQuery();
+        }
+
+        public void eliminarUsuario(int hiddenId)
+        {
+            string consultaSQL = @"DELETE FROM Users WHERE hiddenId="+hiddenId+";";
+            SqlCommand comando = new SqlCommand(consultaSQL, conexion);
+            if (comando.ExecuteNonQuery() > 0){
+                Console.WriteLine("Fila borrada");
+            }else
+            {
+                Console.WriteLine("Error al borrar");
+            }
+        }
+
+        public void eliminarUsuarioPorEmail(string email)
+        {
+            string consultaSQL = @"DELETE FROM Users WHERE email='" + email + "';";
+            SqlCommand comando = new SqlCommand(consultaSQL, conexion);
+            if (comando.ExecuteNonQuery() > 0)
+            {
+                Console.WriteLine("Fila borrada");
+            }
+            else
+            {
+                Console.WriteLine("Error al borrar");
+            }
+        }
+
+        public void actualizarUsuarios(Usuario usuario)
+        {
+            string consultaSQL = @"UPDATE dbo.Users SET ";
+                                                consultaSQL += "password ='" + usuario.password + "'";
+                                                consultaSQL += ",firstName ='" + usuario.firstName + "'";
+                                                consultaSQL += ",lastName ='" + usuario.lastName + "'";
+                                                consultaSQL += ",photoUrl ='" + usuario.photoUrl + "'";
+                                                consultaSQL += ",searchPreferences ='" + usuario.searchPreferences + "'";
+                                                consultaSQL += ",status =" + (usuario.status ? "1" : "0");
+                                                consultaSQL += ",deleted =" + (usuario.deleted ? "1" : "0");
+                                                consultaSQL += ",isAdmin =" + (usuario.isAdmin ? "1" : "0");
+                                                consultaSQL += "WHERE email ='" + usuario.email + "'";
+
+            SqlCommand comando = new SqlCommand(consultaSQL, conexion);
+            if (comando.ExecuteNonQuery() > 0)
+            {
+                Console.WriteLine("Fila actualizada");
+            }
+            else
+            {
+                Console.WriteLine("Error al actualizar");
+            }
         }
     }
 }

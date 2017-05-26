@@ -61,6 +61,7 @@ namespace Database
             //nuevoUsuario2.firstName = "nuevo nombre"; otra forma de añadir
             conectar.actualizarUsuarios(nuevoUsuario2);
             conectar.Desconectar();
+            conectar = null;
             Console.ReadKey();
         }
     }

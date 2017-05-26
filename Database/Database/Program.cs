@@ -48,21 +48,20 @@ namespace Database
             {
                 //hiddenId = 0,
                 //id = "23j3232",
-                email = "andres123@hotmail.com",
+                email = "lopezsss@hotmail.com",
                 password = "99999",
-                firstName = "jose",
+                firstName = "luis",
                 lastName = "andrade",
-                photoUrl = "www.informatizandoweb.com",
+                photoUrl = "wwww.facebook.com",
                 searchPreferences = "",
-                status = false,
-                deleted = false,
-                isAdmin = false
+                status = true,
+                deleted = true,
+                isAdmin = true
             };
+            //nuevoUsuario2.firstName = "nuevo nombre"; otra forma de añadir
             conectar.actualizarUsuarios(nuevoUsuario2);
             conectar.Desconectar();
             Console.ReadKey();
-
-            conectar.Desconectar();
         }
     }
 }

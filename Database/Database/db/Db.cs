@@ -196,7 +196,7 @@ namespace Database
                                                 consultaSQL += ",status =" + (usuario.status ? "1" : "0");
                                                 consultaSQL += ",deleted =" + (usuario.deleted ? "1" : "0");
                                                 consultaSQL += ",isAdmin =" + (usuario.isAdmin ? "1" : "0");
-                                                consultaSQL += "WHERE email ='" + usuario.email + "'";
+                                                consultaSQL += " WHERE email ='" + usuario.email + "'";
 
             SqlCommand comando = new SqlCommand(consultaSQL, conexion);
             if (comando.ExecuteNonQuery() > 0)

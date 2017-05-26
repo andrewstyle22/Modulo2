@@ -26,7 +26,6 @@ namespace Database
                 conexion.ConnectionString = cadenaConexion;
                 conexion.Open();
                 Console.WriteLine("Estado de la conexión: " + conexion.State.ToString());
-                EstaLaConexionAbierta();
             }
             catch (SqlException ex)
             {

@@ -53,3 +53,23 @@ select S.*
 	inner join ServiceImages Si
 	on S.id = Si.idService
 --solo muestra los resultados que tengan valor
+
+select S.id, s.name, si.imageUrl, COUNT(*)
+	from Services S
+	inner join ServiceImages Si
+	on S.id = Si.idService
+	group by S.id, s.name, si.imageUrl
+
+select S.id, s.name, si.imageUrl, COUNT(*)
+	from Services S
+	inner join ServiceImages Si
+	on S.id = Si.idService
+	group by S.id, s.name, si.imageUrl
+	having si.imageUrl like '%_2.png'
+
+select S.id, s.name, si.imageUrl, COUNT(*)
+	from Services S
+	left join ServiceImages Si
+	on S.id = Si.idService
+	group by S.id, s.name, si.imageUrl
+	having si.imageUrl like '%_2.png'

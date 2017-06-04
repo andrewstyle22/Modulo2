@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Database
 {
     public class Program
     {
+        public static object AEnvironment { get; private set; }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Conectado a al base de datos");
 
             Db.Conectar();
+
             //conectar.Conectar();
             Usuario nuevoUsuario = null;
-            if (Db.EstaLaConexionAbierta())
-            {
+            if (Db.EstaLaConexionAbierta()) {
+                ejecutarCoches();
                 nuevoUsuario = new Usuario()
                 {
                     //hiddenId = 0,
@@ -63,5 +67,34 @@ namespace Database
             Db.Desconectar();
             Console.ReadKey();
         }
+        /****************************************************   COCHES   ****************************************************/
+
+        private static void ejecutarCoches() {
+            List<MarcasNCoches> lista = Db.DameListaMarcasNCoches();
+            lista.ForEach(elemento => {
+                Console.WriteLine(
+                        " Marca: " + elemento.marca
+                        +
+                        " Nº de coches: " + elemento.nCoches
+                        );
+            });
+            
+            List<Coche> listaCoches = Db.DameListaCochesConProcedimientoAlmacenado();
+            listaCoches.ForEach(coche =>
+            {
+                Console.WriteLine(
+                    @"Matrícula: " + coche.matricula +
+                    " Marca: " + coche.marca.denominacion +
+                    " Combustible: " + coche.tipoCombustible.denominacion
+                    );
+            });
+            Db.Desconectar();
+            Console.ReadKey();
+            Environment.Exit(0);
+        }
+
+        /****************************************************   COCHES   ****************************************************/
+
+
     }
 }

@@ -73,3 +73,11 @@ select S.id, s.name, si.imageUrl, COUNT(*)
 	on S.id = Si.idService
 	group by S.id, s.name, si.imageUrl
 	having si.imageUrl like '%_2.png'
+	
+-- CONSULTA PARA INSERCIONES MASIVAS INSERT - SELECT de los datos que obtengo luego son los datos que yo inserto
+INSERT INTO ServiceImages (idService, imageUrl)
+SELECT idService, imageUrl FROM ServiceImages
+
+-- CREAR UNA TABLA A PARTIR DE UNA SELECT
+SELECT * into ServicesImagesTemporal FROM ServiceImages
+	

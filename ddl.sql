@@ -135,3 +135,48 @@ BEGIN
 END
 
 exec GET_COCHE_POR_MARCA;
+
+CREATE PROCEDURE GET_COCHE_POR_MARCA_MATRICULA_PLAZAS
+AS
+BEGIN
+    SELECT 
+         M.denominacion as Marca
+        ,C.matricula
+        ,C.nPlazas
+    FROM Marcas M
+        INNER JOIN Coches C ON M.id = C.idMarca
+    GROUP BY 
+         M.denominacion
+        ,C.matricula
+        ,C.nPlazas
+    ORDER BY nPlazas
+END
+*/
+alter PROCEDURE GET_COCHE_POR_MARCA_MATRICULA_PLAZAS_2
+	@marca nvarchar(50) = null,
+	@nPlazas smallint = null
+AS
+BEGIN
+    SELECT 
+         M.denominacion as Marca
+        ,C.matricula
+        ,C.nPlazas
+    FROM Marcas M
+        INNER JOIN Coches C ON M.id = C.idMarca
+	Where 
+		(M.denominacion like '%' + @marca + '%' 
+		or @marca is null)
+		and (C.nPlazas >= @nPlazas or @nPlazas is null)
+    GROUP BY 
+         M.denominacion
+        ,C.matricula
+        ,C.nPlazas
+    ORDER BY nPlazas
+END;
+
+SELECT * FROM V_N_COCHES_POR_MARCA;  
+GO
+
+exec GET_COCHE_POR_MARCA_MATRICULA_PLAZAS_2
+   @marca = 'toyota'
+   ,@nPlazas = 2

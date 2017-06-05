@@ -12,7 +12,9 @@ namespace ApiCarRental
         {
             // Configuración y servicios de API web
             // No queremos utilizar la salida xml y la queremos en json
-            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            //config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
 
             // Rutas de API web
             config.MapHttpAttributeRoutes();

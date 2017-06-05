@@ -88,6 +88,25 @@ namespace Database
                     " Combustible: " + coche.tipoCombustible.denominacion
                     );
             });
+            List<Coche> listaCoches2 = Db.GET_COCHE_POR_MARCA_MATRICULA_PLAZAS();
+            listaCoches2.ForEach(coche =>
+            {
+                Console.WriteLine(
+                    @"Matrícula: " + coche.matricula +
+                    " Marca: " + coche.marca.denominacion +
+                    " NPlazas: " + coche.nPlazas
+                    );
+            });
+            Console.WriteLine("GET_COCHE_POR_MARCA_MATRICULA_PLAZAS()");
+            List<Coche> listaCocheMarca = Db.GET_COCHE_POR_MARCA_MATRICULA_PLAZAS();
+            listaCocheMarca.ForEach(coche =>
+            {
+                Console.WriteLine(
+                    @"Matrícula: " + coche.matricula +
+                    " Marca: " + coche.marca.denominacion +
+                    " NPlazas: " + coche.nPlazas
+                    );
+            });
             Db.Desconectar();
             Console.ReadKey();
             Environment.Exit(0);

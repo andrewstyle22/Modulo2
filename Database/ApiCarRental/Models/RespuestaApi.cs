@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ApiCarRental
 {
-    public class RespuestaApi <T>
+    public class RespuestaApi <T> where T : class
     {
         public int totalElementos { get; set; }
         public string error { get; set; }

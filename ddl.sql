@@ -123,7 +123,7 @@ go
 INSERT [dbo].[Coches] ([matricula], [idMarca], [idTipoCombustible], [color], [cilindrada], [fechaMatriculacion]) 
 VALUES (N'BBD6998', 2, 2, N'Amarillo2', CAST(1.50 AS Decimal(4, 2)),  CAST(N'2003-05-14' AS Date))
 go
-*/
+*//*
 -- CREAMOS UN PROCEDIMIENTO ALMACENADO
 create PROCEDURE GET_COCHE_POR_MARCA
 AS
@@ -151,7 +151,7 @@ BEGIN
         ,C.nPlazas
     ORDER BY nPlazas
 END
-*/
+
 alter PROCEDURE GET_COCHE_POR_MARCA_MATRICULA_PLAZAS_2
 	@marca nvarchar(50) = null,
 	@nPlazas smallint = null
@@ -180,3 +180,60 @@ GO
 exec GET_COCHE_POR_MARCA_MATRICULA_PLAZAS_2
    @marca = 'toyota'
    ,@nPlazas = 2
+
+select * from coches where id=2;
+
+CREATE PROCEDURE GET_COCHE_POR_ID
+	@iD bigint = null
+AS
+BEGIN
+    SELECT * FROM Coches C
+	Where (C.id = @iD  or @iD is null)
+END;
+
+CREATE PROCEDURE [dbo].[GET_COCHE_POR_MARCA_ID]
+	@id bigint
+AS
+BEGIN
+SELECT 
+	  Marcas.denominacion as denominacionMarca
+	, TiposCombustible.denominacion as denominacionTipoCombustible
+	, Coches.idMarca
+	, Coches.idTipoCombustible
+	, Coches.id, Coches.matricula, Coches.color, Coches.nPlazas
+	, Coches.fechaMatriculacion, Coches.cilindrada
+FROM Marcas
+	INNER JOIN Coches on Marcas.id = Coches.idMarca
+	INNER JOIN TiposCombustible on Coches.idTipoCombustible = TiposCombustible.id
+--WHERE Coches.id = @id
+GROUP BY 
+	  Marcas.denominacion
+	, TiposCombustible.denominacion
+	, Coches.idMarca
+	, Coches.idTipoCombustible
+	, Coches.id, Coches.matricula, Coches.color, Coches.nPlazas
+	, Coches.fechaMatriculacion, Coches.cilindrada
+ORDER BY Marcas.denominacion
+END
+
+exec GET_COCHE_POR_MARCA_ID 2;
+
+
+  ---Procedimientos para listar las marcas
+  create procedure Get_Marcas
+  as
+  Begin
+	select id, denominacion from Marcas
+  end;
+
+  exec Get_Marcas;
+  */
+    ---Procedimientos para listar las marcas
+  alter procedure Get_Marcas_ID
+  	@id bigint   as
+  Begin
+	select id, denominacion from Marcas
+	WHERE Marcas.id = @id 
+  end;
+
+  exec Get_Marcas_ID 2;

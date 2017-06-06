@@ -15,11 +15,29 @@ namespace ApiCarRental.Controllers
         //    // return new string[] { "value1", "value2" };
         //}
 
-        //// GET: api/Coches/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        // GET: api/Coches/5
+        public RespuestaApi<Coche> Get(int id)
+        {
+            RespuestaApi<Coche> resultado = new RespuestaApi<Coche>();
+            List<Coche> data = new List<Coche>();
+            try
+            {
+                Db.Conectar();
+                if (Db.EstaLaConexionAbierta())
+                {
+                    data = Db.DameListaCochesConProcedimientoAlmacenadoPorId(id);
+                    resultado.error = "";
+                }
+            }
+            catch (Exception)
+            {
+                resultado.error = "Error";
+            }
+            resultado.totalElementos = data.Count;
+            resultado.data = data;
+           // Db.Desconectar();
+            return resultado;
+        }
 
         // GET: api/Coches/5
         //public IEnumerable<Coche> Get()
@@ -42,9 +60,9 @@ namespace ApiCarRental.Controllers
         //    return resultado;
         //}
 
-        public RespuestaApi Get()
+        public RespuestaApi<Coche> Get()
         {
-            RespuestaApi resultado = new RespuestaApi();
+            RespuestaApi<Coche> resultado = new RespuestaApi<Coche>();
             List<Coche> data = new List<Coche>();
             try
             {
@@ -61,6 +79,7 @@ namespace ApiCarRental.Controllers
             }
             resultado.totalElementos = data.Count;
             resultado.data = data;
+            Db.Desconectar();
             return resultado;
         }
 

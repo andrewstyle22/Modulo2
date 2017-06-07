@@ -131,7 +131,7 @@ namespace ApiCarRental
                 coche.marca.denominacion = reader["denominacionMarca"].ToString();
                 coche.tipoCombustible = new TipoCombustible();
                 coche.tipoCombustible.id = (long) reader["idTipoCombustible"];
-              //  coche.tipoCombustible.denominacion = reader["denominacionTipoCombustible"].ToString();
+                coche.tipoCombustible.denominacion = reader["denominacion"].ToString();
                 // AÑADO EL COCHE A LA LISTA DE RESULTADOS
                 resultados.Add(coche);
 

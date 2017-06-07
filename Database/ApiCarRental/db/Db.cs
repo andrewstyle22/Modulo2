@@ -63,7 +63,8 @@ namespace ApiCarRental
                 conexion = null;
             }
         }
-        
+
+
         public static List<MarcasNCoches> DameListaMarcasNCoches() {
             List<MarcasNCoches> resultados = new List<MarcasNCoches>();
             // PREPARO LA CONSULTA SQL PARA OBTENER LOS USUARIOS
@@ -278,7 +279,6 @@ namespace ApiCarRental
 
         public static List<Marca> DameListaMarcasPorId(int id)
         {
-
             // CREO EL OBJETO EN EL QUE SE DEVOLVERÁN LOS RESULTADOS
             List<Marca> resultados = new List<Marca>();
 
@@ -307,5 +307,53 @@ namespace ApiCarRental
             return resultados;
         }
 
+
+        internal static List<TipoCombustible> DameListaTipoCombustibles()
+        {
+            List<TipoCombustible> resultados = new List<TipoCombustible>();
+            string procedimientoAEjecutar = "dbo.Get_TiposCombustible";
+            SqlCommand comando = new SqlCommand(procedimientoAEjecutar, conexion);
+            comando.CommandType = CommandType.StoredProcedure;
+            SqlDataReader reader = comando.ExecuteReader();
+            while (reader.Read())
+            {
+                TipoCombustible tc = new TipoCombustible();
+                tc.id = (long)reader["id"];
+                tc.denominacion = reader["denominacion"].ToString();
+                resultados.Add(tc);
+            }
+            reader.Close();
+            return resultados;
+        }
+
+        internal static List<TipoCombustible> DameListaTipoCombustiblePorId(int id)
+        {
+            // CREO EL OBJETO EN EL QUE SE DEVOLVERÁN LOS RESULTADOS
+            List<TipoCombustible> resultados = new List<TipoCombustible>();
+
+            string procedimientoAEjecutar = "dbo.Get_TipoCombustible_ID";
+
+            // PREPARAMOS EL COMANDO PARA EJECUTAR EL PROCEDIMIENTO ALMACENADO
+            SqlCommand comando = new SqlCommand(procedimientoAEjecutar, conexion);
+            comando.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter parametroId = new SqlParameter();
+            parametroId.ParameterName = "id";
+            parametroId.SqlDbType = SqlDbType.BigInt;
+            parametroId.SqlValue = id;
+            comando.Parameters.Add(parametroId);
+            // EJECUTO EL COMANDO
+            SqlDataReader reader = comando.ExecuteReader();
+            // RECORRO EL RESULTADO Y LO PASO A LA VARIABLE A DEVOLVER
+            while (reader.Read())
+            {
+                TipoCombustible tc = new TipoCombustible();
+                tc.id = (long)reader["id"];
+                tc.denominacion = reader["denominacion"].ToString();
+                resultados.Add(tc);
+            }
+            reader.Close();
+            return resultados;
+        }
     }
 }

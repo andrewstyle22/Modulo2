@@ -237,3 +237,20 @@ exec GET_COCHE_POR_MARCA_ID 2;
   end;
 
   exec Get_Marcas_ID 2;
+
+ create procedure Get_TiposCombustible
+  as
+  Begin
+	select id, denominacion from TiposCombustible
+  end;
+  
+  exec Get_TiposCombustible;
+
+ create procedure Get_TipoCombustible_ID
+  	@id bigint   as
+  Begin
+	select id, denominacion from TiposCombustible
+	WHERE TiposCombustible.id = @id 
+  end;
+
+  exec  Get_TipoCombustible_ID 2;

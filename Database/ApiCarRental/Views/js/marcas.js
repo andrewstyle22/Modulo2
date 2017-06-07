@@ -1,4 +1,14 @@
 ﻿$(document).ready(function () {
+     
+     /*
+     return false from within a jQuery event handler is effectively the same as calling both 
+     e.preventDefault and e.stopPropagation on the passed jQuery.Event object.
+     https://stackoverflow.com/questions/1357118/event-preventdefault-vs-return-false
+     e.preventDefault() will prevent the default event from occuring, e.stopPropagation() will prevent the event from bubbling up 
+     and return false will do both. Note that this behaviour differs from normal (non-jQuery) event handlers, in which, notably, 
+     return false does not stop the event from bubbling up.
+     return false does e.preventDefault() and e.stopPropagation().
+     */
     //coloco esto para que cuando ejecute cada botón no se ejecute todos los form a la vez
     $("form").submit(function (e) {
         e.preventDefault();

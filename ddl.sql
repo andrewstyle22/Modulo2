@@ -254,3 +254,13 @@ exec GET_COCHE_POR_MARCA_ID 2;
   end;
 
   exec  Get_TipoCombustible_ID 2;
+
+ alter PROCEDURE GET_COCHE_POR_MARCA
+AS
+BEGIN
+	SELECT Coches.*, Marcas.denominacion as denominacionMarca, TiposCombustible.denominacion
+	FROM Marcas
+		INNER JOIN Coches on Marcas.id = Coches.idMarca
+		inner join TiposCombustible on Marcas.id = TiposCombustible.id
+	--PRINT 'MI PRIMER PROCEDIMIENTO ALMACENADO'
+END

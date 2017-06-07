@@ -64,8 +64,28 @@ namespace ApiCarRental.Controllers
         }
 
         // POST: api/TipoCombustible
-        public void Post([FromBody]string value)
+        public RespuestaApi<TipoCombustible> Post([FromBody]string value)
         {
+            RespuestaApi<TipoCombustible> resultado = new RespuestaApi<TipoCombustible>();
+            List<TipoCombustible> data = new List<TipoCombustible>();
+            try
+            {
+                Db.Conectar();
+                if (Db.EstaLaConexionAbierta())
+                {
+                    data = Db.DameListaTipoCombustibles();
+                    resultado.error = "";
+                }
+            }
+            catch (Exception)
+            {
+                resultado.totalElementos = 0;
+                resultado.error = "Error";
+            }
+            resultado.totalElementos = data.Count;
+            resultado.data = data;
+            Db.Desconectar();
+            return resultado;
         }
 
         // PUT: api/TipoCombustible/5

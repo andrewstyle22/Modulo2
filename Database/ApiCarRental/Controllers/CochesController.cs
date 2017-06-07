@@ -85,8 +85,27 @@ namespace ApiCarRental.Controllers
 
 
         // POST: api/Coches
-        public void Post([FromBody]string value)
+        public RespuestaApi<Coche> Post([FromBody]string value)
         {
+            RespuestaApi<Coche> resultado = new RespuestaApi<Coche>();
+            List<Coche> data = new List<Coche>();
+            try
+            {
+                Db.Conectar();
+                if (Db.EstaLaConexionAbierta())
+                {
+                    data = Db.DameListaCochesConProcedimientoAlmacenado();
+                    resultado.error = "";
+                }
+            }
+            catch (Exception)
+            {
+                resultado.error = "Error";
+            }
+            resultado.totalElementos = data.Count;
+            resultado.data = data;
+            Db.Desconectar();
+            return resultado;
         }
 
         // PUT: api/Coches/5

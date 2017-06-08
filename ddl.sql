@@ -264,7 +264,21 @@ BEGIN
 		inner join TiposCombustible on Marcas.id = TiposCombustible.id
 	--PRINT 'MI PRIMER PROCEDIMIENTO ALMACENADO'
 END
+/*
+SET NOCOUNT 
+Evita que se devuelva el mensaje que muestra el recuento del número de filas afectadas por una instrucción o 
+un procedimiento almacenado de Transact-SQL como parte del conjunto de resultados.
 
+Si se establece SET NOCOUNT en ON, no se devuelve el recuento. Cuando SET NOCOUNT es OFF, sí se devuelve ese número.
+El @@ROWCOUNT función se actualiza incluso cuando SET NOCOUNT es ON.
+SET NOCOUNT ON impide el envío al cliente de mensajes DONE_IN_PROC por cada instrucción de un procedimiento almacenado. 
+En los procedimientos almacenados que contengan varias instrucciones que no devuelven mucha información real o en los
+procedimientos que contengan bucles de Transact-SQL, establecer SET NOCOUNT en ON puede suponer una mejora significativa 
+del rendimiento, ya que el tráfico de la red se reduce en gran medida.
+La configuración especificada por SET NOCOUNT está activa en tiempo de ejecución, no en tiempo de análisis.
+Para ver la configuración actual de este valor, ejecute la consulta siguiente.
+
+*/
 create PROCEDURE Insertar_Marcas
 	@denominacion nvarchar(50)
    --,@msg AS VARCHAR(100) NULL OUTPUT

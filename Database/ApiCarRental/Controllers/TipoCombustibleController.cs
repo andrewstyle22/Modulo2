@@ -64,28 +64,27 @@ namespace ApiCarRental.Controllers
         }
 
         // POST: api/TipoCombustible
-        public RespuestaApi<TipoCombustible> Post([FromBody]string value)
+
+        [HttpPost]
+        public IHttpActionResult Post([FromBody] TipoCombustible tp)
         {
-            RespuestaApi<TipoCombustible> resultado = new RespuestaApi<TipoCombustible>();
-            List<TipoCombustible> data = new List<TipoCombustible>();
+            RespuestaApi<TipoCombustible> respuesta = new RespuestaApi<TipoCombustible>();
+            respuesta.datos = tp.denominacion;
+            int filaAfectadas;
             try
             {
                 Db.Conectar();
                 if (Db.EstaLaConexionAbierta())
                 {
-                    data = Db.DameListaTipoCombustibles();
-                    resultado.error = "";
+                    filaAfectadas = Db.InsertarTipocombustible(tp);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                resultado.totalElementos = 0;
-                resultado.error = "Error";
+                respuesta.error = "Error al conectar con la base de datos " + e.ToString();
             }
-            resultado.totalElementos = data.Count;
-            resultado.data = data;
             Db.Desconectar();
-            return resultado;
+            return Ok(respuesta);
         }
 
         // PUT: api/TipoCombustible/5

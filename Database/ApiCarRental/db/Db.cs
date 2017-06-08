@@ -94,6 +94,39 @@ namespace ApiCarRental
             return resultados;
         }
 
+        internal static int InsertarTipocombustible(TipoCombustible tp)
+        {
+            string respuesta = "";
+            int filaAfectadas;
+            try
+            {
+                string procedimientoAEjecutar = "dbo.Insertar_Tipo_Combustible";
+                
+                SqlCommand comando = new SqlCommand(procedimientoAEjecutar, conexion);
+                comando.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter parametroDenominacion = new SqlParameter();
+                parametroDenominacion.ParameterName = "denominacion";
+                parametroDenominacion.SqlDbType = SqlDbType.NVarChar;
+                parametroDenominacion.SqlValue = tp.denominacion;
+
+                comando.Parameters.Add(parametroDenominacion);
+
+                filaAfectadas = comando.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                respuesta = "Error al insertar: " + ex.ToString();
+                filaAfectadas = -1;
+            }
+            catch (Exception ex)
+            {
+                respuesta = "Error al insertar: " + respuesta + " " + ex.ToString();
+                filaAfectadas = -1;
+            }
+            return filaAfectadas;
+        }
+
         //internal static string InsertarMarcas1(Marca marca) {
         internal static int InsertarMarcas1(Marca marca)
         {

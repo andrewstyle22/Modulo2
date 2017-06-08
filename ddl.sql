@@ -278,7 +278,7 @@ del rendimiento, ya que el tráfico de la red se reduce en gran medida.
 La configuración especificada por SET NOCOUNT está activa en tiempo de ejecución, no en tiempo de análisis.
 Para ver la configuración actual de este valor, ejecute la consulta siguiente.
 
-*/
+
 create PROCEDURE Insertar_Marcas
 	@denominacion nvarchar(50)
    --,@msg AS VARCHAR(100) NULL OUTPUT
@@ -300,3 +300,20 @@ END
 DECLARE @msg AS VARCHAR(100);
 EXEC Insertar_Marcas 'Nissan',@msg OUTPUT
 SELECT @msg AS msg
+
+create PROCEDURE Insertar_Marcas2
+	@denominacion nvarchar(50)
+AS
+BEGIN
+	INSERT [dbo].[Marcas] ( [denominacion]) VALUES (@denominacion)
+END
+*/
+
+create PROCEDURE Insertar_Tipo_Combustible
+	@denominacion nvarchar(50)
+AS
+BEGIN
+	INSERT [dbo].[TiposCombustible] ( [denominacion]) VALUES (@denominacion)
+END
+
+exec Insertar_Tipo_Combustible 'cerveza';

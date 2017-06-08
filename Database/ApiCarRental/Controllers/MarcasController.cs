@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Services;
 
 namespace ApiCarRental.Controllers
 {
@@ -60,17 +61,26 @@ namespace ApiCarRental.Controllers
             }
             resultado.totalElementos = data.Count;
             resultado.data = data;
-            // Db.Desconectar();
+            Db.Desconectar();
             return resultado;
         }
 
         // POST: api/Marcas
-        public void Post([FromBody]string value,[FromBody] string value2)
+        [WebMethod]
+        public string Post([FromBody] Marca value)
         {
-            string valor1 = value;
-            string valor2 = value2;
-            Console.WriteLine("Valores " + valor1 + "  " + valor2);
-            Console.ReadKey();
+            string denominacion1 = value.denominacion;
+            string respuesta = "";
+            try {
+                Db.Conectar();
+                if (Db.EstaLaConexionAbierta()) {
+                     respuesta = Db.InsertarMarcas1(denominacion1);
+                }
+            } catch (Exception e) {
+                respuesta = "Error al conectar con la base de datos "+e.ToString();
+            }
+            Db.Desconectar();
+            return respuesta;
         }
 
         // PUT: api/Marcas/5

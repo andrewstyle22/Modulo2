@@ -1,4 +1,8 @@
 ﻿$(document).ready(function () {
+    $("form").submit(function (e) {
+        e.preventDefault();
+    });
+
     function GetTipoCombustible() {
         var urlAPI = 'http://localhost:54704/api/tipocombustible';
 
@@ -26,38 +30,59 @@
         });
     }
 
-    $('#btnAddTipoCombustible').click(function () {
-        debugger;
-        var nuevaTipoCombustible = $('#txtTipoCombustible').val();
+    $('#btnAddCombustible').click(function () {
+        var nuevaCombustible = $('#txtComustibleDenominacion').val();
         var urlAPI = 'http://localhost:54704/api/tipocombustible';
-        var data = {
+        var dataNuevoCombustible = {
             id: 0,
-            denominacion: nuevaTipoCombustible
+            denominacion: nuevaCombustible
         };
-        debugger;
+
         $.ajax({
-            url: urlapi,
-            type: "post",
-            data: JSON.stringify({
-                id: 0,
-                denominacion: nuevaTipoCombustible
-            }),
-            //data: {
-            //    id: 0,
-            //    denominacion: nuevamarca
-            //},
-            contenttype: "application/json",
-            complete: function (respuesta, estado) {
-                debugger;
-                console.log(respuesta);
+            url: urlAPI,
+            type: "POST",
+            dataType: 'json',
+            data: dataNuevoCombustible,
+            success: function (data, textStatus, xhr) {
+                //debugger;
+                console.log("Data: " + JSON.stringify(data) + "\nXHR: " + JSON.stringify(xhr) + "\ntextStatus: " + JSON.stringify(textStatus));
+                alert("Combustible " + data.datos + " insertada");
+                $('#txtComustibleDenominacion').val('');
+                GetTipoCombustible();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log(JSON.stringify(errorThrown) + "\n xhr: " + JSON.stringify(xhr) + "\n textStatus: " + JSON.stringify(textStatus));
             }
         });
-        //$.post(urlAPI, data, function (result) {
-        //    debugger;
-        //    $("span").html(result);
-        //});
+    });
 
+    $('#btnFindTipoCombustibleId').click(function () {
+        var idTipoCombustible = $('#txtTipoCombustible').val();
+        var idTipoCombustibleInt = parseInt(idTipoCombustible);
+        // debugger;
+        var urlAPI = 'http://localhost:54704/api/tipocombustible/' + idTipoCombustibleInt;
+        $.get(urlAPI, function (respuesta, estado) {
 
+            $('#resultados2').html('');
+            // COMPRUEBO EL ESTADO DE LA LLAMADA
+            if (estado === 'success') {
+                // SI LLEGO HASTA AQUÍ QUIERE DECIR
+
+                var relleno = '';
+
+                $.each(respuesta.data, function (indice, elemento) {
+
+                    relleno = '<ul>';
+                    relleno += '    <li>';
+                    relleno += elemento.denominacion;
+                    relleno += '    </li>';
+                    relleno += '</ul>';
+
+                    $('#resultados2').append(relleno);
+                    // debugger;
+                });
+            }
+        });
     });
 
     GetTipoCombustible();

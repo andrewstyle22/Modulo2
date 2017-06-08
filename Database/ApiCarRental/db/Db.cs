@@ -94,27 +94,39 @@ namespace ApiCarRental
             return resultados;
         }
 
-        internal static string InsertarMarcas1(string denominacion1) {
+        //internal static string InsertarMarcas1(Marca marca) {
+        internal static int InsertarMarcas1(Marca marca)
+        {
             string respuesta = "";
-            try {
-                string procedimientoAEjecutar = "dbo.Insertar_Marcas";
+            int filaAfectadas;
+            try
+            {
+                //string procedimientoAEjecutar = "dbo.Insertar_Marcas";
+                string procedimientoAEjecutar = "dbo.Insertar_Marcas2";
 
                 // PREPARAMOS EL COMANDO PARA EJECUTAR EL PROCEDIMIENTO ALMACENADO
-                SqlCommand comando = new SqlCommand(procedimientoAEjecutar,conexion);
+                SqlCommand comando = new SqlCommand(procedimientoAEjecutar, conexion);
                 comando.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter parametroDenominacion = new SqlParameter();
                 parametroDenominacion.ParameterName = "denominacion";
                 parametroDenominacion.SqlDbType = SqlDbType.NVarChar;
-                parametroDenominacion.SqlValue = denominacion1;
+                parametroDenominacion.SqlValue = marca.denominacion;
                 comando.Parameters.Add(parametroDenominacion);
-                comando.ExecuteNonQuery();
-                respuesta = "Marca " + denominacion1 + " insertada";
-                // EJECUTO EL COMANDO
-            } catch (Exception ex) {
-                respuesta = "Error al insertar: " + ex.ToString();
+                filaAfectadas = comando.ExecuteNonQuery();
+                //respuesta = "Marca " + marca.denominacion + " insertada";
             }
-            return respuesta;
+            catch (SqlException ex)
+            {
+                respuesta = "Error al insertar: " + ex.ToString();
+                filaAfectadas = -1;
+            }
+            catch (Exception ex)
+            {
+                respuesta = "Error al insertar: " + respuesta + " " + ex.ToString();
+                filaAfectadas = -1;
+            }
+            return filaAfectadas;
         }
 
         public static List<Coche> DameListaCochesConProcedimientoAlmacenado() {

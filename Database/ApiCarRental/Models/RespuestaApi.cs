@@ -9,6 +9,8 @@ namespace ApiCarRental
     {
         public int totalElementos { get; set; }
         public string error { get; set; }
+        public string datos { get; set; }
+        public int datosInt { get; set; }
         //public List<Coche> data { get; set; }
         public List<T> data { get; set; }
     }

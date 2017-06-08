@@ -64,12 +64,12 @@ namespace ApiCarRental.Controllers
             Db.Desconectar();
             return resultado;
         }
-
+        /* Esto funciona pero es antiguo ahora se utiliza HttpPost
         // POST: api/Marcas
         [WebMethod]
-        public string Post([FromBody] Marca value)
+        public string Post([FromBody] Marca marca)
         {
-            string denominacion1 = value.denominacion;
+            string denominacion1 = marca.denominacion;
             string respuesta = "";
             try {
                 Db.Conectar();
@@ -82,7 +82,33 @@ namespace ApiCarRental.Controllers
             Db.Desconectar();
             return respuesta;
         }
+        */
 
+        [HttpPost]
+        public IHttpActionResult Post([FromBody] Marca marca)
+        {
+            RespuestaApi<Marca> respuesta = new RespuestaApi<Marca>();
+            respuesta.datos = marca.denominacion;
+            string mensaje = "";
+            int filaAfectadas;
+            try
+            {
+                Db.Conectar();
+                if (Db.EstaLaConexionAbierta())
+                {
+                    //mensaje = Db.InsertarMarcas1(marca);
+                    filaAfectadas = Db.InsertarMarcas1(marca);
+                }
+            }
+            catch (Exception e)
+            {
+                respuesta.error = "Error al conectar con la base de datos " + e.ToString();
+            }
+            Db.Desconectar();
+            //return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, mensaje)); ;
+            return Ok(respuesta);
+        }
+        
         // PUT: api/Marcas/5
         public void Put(int id, [FromBody]string value)
         {

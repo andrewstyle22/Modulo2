@@ -65,8 +65,12 @@ namespace ApiCarRental.Controllers
         }
 
         // POST: api/Marcas
-        public void Post([FromBody]string value)
+        public void Post([FromBody]string value,[FromBody] string value2)
         {
+            string valor1 = value;
+            string valor2 = value2;
+            Console.WriteLine("Valores " + valor1 + "  " + valor2);
+            Console.ReadKey();
         }
 
         // PUT: api/Marcas/5

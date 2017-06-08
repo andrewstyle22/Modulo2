@@ -37,32 +37,28 @@
             }
         });
     }
-    /*
+    
     $('#btnAddMarca').click(function () {
-        debugger;
+      //  debugger;
         var nuevaMarca = $('#txtMarcaDenominacion').val();
         var urlAPI = 'http://localhost:54704/api/marcas';
         var data = {
             id: 0,
             denominacion: nuevaMarca
         };
-        debugger;
+       // debugger;
         $.ajax({
-            url: urlapi,
+            url: urlAPI,
             type: "post",
             data: JSON.stringify({
                 id: 0,
-                denominacion: nuevamarca
+                denominacion: nuevaMarca
             }),
             //data: {
             //    id: 0,
             //    denominacion: nuevamarca
             //},
-            contenttype: "application/json",
-            complete: function (respuesta, estado) {
-                debugger;
-                console.log(respuesta);
-            }
+            contenttype: "application/json"
         });
         //$.post(urlAPI, data, function (result) {
         //    debugger;
@@ -71,7 +67,7 @@
 
 
     });
-    */
+    
 
     $('#btnFindMarcaId').click(function () {
         var idMarca = $('#idMarcaDenominacionBuscar').val();

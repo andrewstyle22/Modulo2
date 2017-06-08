@@ -1,4 +1,14 @@
 ﻿$(document).ready(function () {
+     
+     /*
+     return false from within a jQuery event handler is effectively the same as calling both 
+     e.preventDefault and e.stopPropagation on the passed jQuery.Event object.
+     https://stackoverflow.com/questions/1357118/event-preventdefault-vs-return-false
+     e.preventDefault() will prevent the default event from occuring, e.stopPropagation() will prevent the event from bubbling up 
+     and return false will do both. Note that this behaviour differs from normal (non-jQuery) event handlers, in which, notably, 
+     return false does not stop the event from bubbling up.
+     return false does e.preventDefault() and e.stopPropagation().
+     */
     //coloco esto para que cuando ejecute cada botón no se ejecute todos los form a la vez
     $("form").submit(function (e) {
         e.preventDefault();
@@ -27,7 +37,7 @@
             }
         });
     }
-    
+    /*
     $('#btnAddMarca').click(function () {
       //  debugger;
         var nuevaMarca = $('#txtMarcaDenominacion').val();
@@ -57,6 +67,35 @@
 
 
     });
+    */
+    /*
+     * https://weblog.west-wind.com/posts/2012/may/08/passing-multiple-post-parameters-to-web-api-controller-methods
+     * 
+     */
+    $('#btnAddMarca').bind("click", GeneralPost);
+    function GeneralPost() {
+        var nuevaMarca = $('#txtMarcaDenominacion').val();
+        console.log("nuevaMarca: ", nuevaMarca);
+        //debugger;
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:54704/api/marcas/',
+            data: JSON.stringify({
+                denominacion: nuevaMarca
+            }),
+            crossDomain: true,
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data, textStatus, xhr) {
+                console.log("Respuesta: ", data);
+                $('#txtMarcaDenominacion').val('');
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log(JSON.stringify(errorThrown) + "\n xhr: " + JSON.stringify(xhr) + "\n textStatus: " + JSON.stringify(textStatus));
+            }
+        });
+    }
     
 
     $('#btnFindMarcaId').click(function () {
@@ -64,7 +103,7 @@
         var idMarcaInt = parseInt(idMarca);
        // alert("hola"+ idMarca);
         console.log("id de la marca: ");
-        debugger;
+       // debugger;
         var urlAPI = 'http://localhost:54704/api/marcas/'+idMarcaInt;
         $.get(urlAPI, function (respuesta, estado) {
         
@@ -84,7 +123,7 @@
                     relleno += '</ul>';
 
                     $('#resultados2').append(relleno);
-                    debugger;
+                   // debugger;
                 });
             }
         });

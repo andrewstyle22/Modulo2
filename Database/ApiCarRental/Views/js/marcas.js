@@ -68,6 +68,13 @@
 
     });
     */
+<<<<<<< HEAD
+=======
+    /*
+     * https://weblog.west-wind.com/posts/2012/may/08/passing-multiple-post-parameters-to-web-api-controller-methods
+     * 
+     */
+>>>>>>> development
     $('#btnAddMarca').bind("click", GeneralPost);
     function GeneralPost() {
         var nuevaMarca = $('#txtMarcaDenominacion').val();

@@ -78,17 +78,17 @@ SET IDENTITY_INSERT [dbo].[Marcas] OFF
 SET IDENTITY_INSERT [dbo].[TiposCombustible] ON 
 
 INSERT [dbo].[TiposCombustible] ([id], [denominacion]) VALUES (1, N'Gasolina')
-INSERT [dbo].[TiposCombustible] ([id], [denominacion]) VALUES (2, N'Diésel')
-INSERT [dbo].[TiposCombustible] ([id], [denominacion]) VALUES (3, N'Híbrido')
-INSERT [dbo].[TiposCombustible] ([id], [denominacion]) VALUES (4, N'Eléctrico')
-INSERT [dbo].[TiposCombustible] ([id], [denominacion]) VALUES (5, N'Hidrógeno')
+INSERT [dbo].[TiposCombustible] ([id], [denominacion]) VALUES (2, N'DiÃ©sel')
+INSERT [dbo].[TiposCombustible] ([id], [denominacion]) VALUES (3, N'HÃ­brido')
+INSERT [dbo].[TiposCombustible] ([id], [denominacion]) VALUES (4, N'ElÃ©ctrico')
+INSERT [dbo].[TiposCombustible] ([id], [denominacion]) VALUES (5, N'HidrÃ³geno')
 
 SET IDENTITY_INSERT [dbo].[TiposCombustible] OFF
-/*añado al campo nPlazas valor por defecto 5 
+/*aÃ±ado al campo nPlazas valor por defecto 5 
 INSERT [dbo].[Coches] ([matricula], [idMarca], [idTipoCombustible], [color], [cilindrada], [fechaMatriculacion]) 
 VALUES (N'BBD6998', 2, 2, N'Amarillo2', CAST(1.50 AS Decimal(4, 2)),  CAST(N'2003-05-14' AS Date))
 
-no lo añado en el value y así no tengo que poner ningún valor para nPlazas
+no lo aÃ±ado en el value y asÃ­ no tengo que poner ningÃºn valor para nPlazas
 */
 ALTER TABLE [dbo].[Coches] ADD  DEFAULT ((5)) FOR [nPlazas]
 GO
@@ -114,11 +114,11 @@ GO
 SELECT * FROM V_N_COCHES_POR_MARCA;  
 GO
 /*
-IDENT_CURRENT,donde se le pasa por parámetro el nombre de la tabla y nos devuelve el ultimo 
+IDENT_CURRENT,donde se le pasa por parÃ¡metro el nombre de la tabla y nos devuelve el ultimo 
 valor identity generado para esta tabla, sin importar el scope.
 */
 /*
-select IDENT_CURRENT('Coches') as 'último identity';
+select IDENT_CURRENT('Coches') as 'Ãºltimo identity';
 go
 INSERT [dbo].[Coches] ([matricula], [idMarca], [idTipoCombustible], [color], [cilindrada], [fechaMatriculacion]) 
 VALUES (N'BBD6998', 2, 2, N'Amarillo2', CAST(1.50 AS Decimal(4, 2)),  CAST(N'2003-05-14' AS Date))
@@ -264,3 +264,25 @@ BEGIN
 		inner join TiposCombustible on Marcas.id = TiposCombustible.id
 	--PRINT 'MI PRIMER PROCEDIMIENTO ALMACENADO'
 END
+
+create PROCEDURE Insertar_Marcas
+	@denominacion nvarchar(50)
+   --,@msg AS VARCHAR(100) NULL OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+Begin Tran TinsertMarca
+Begin Try
+	INSERT [dbo].[Marcas] ( [denominacion]) VALUES (@denominacion)
+	--SET @msg = 'La Marca '+ @denominacion + ' se registro correctamente.'
+	COMMIT TRAN
+End Try
+Begin Catch
+	--Set @msg = 'Error: ' + ERROR_MESSAGE() + ' en la lÃ­nea ' + CONVERT(NVARCHAR(255), ERROR_LINE() ) + '.'
+	Rollback TRAN TinsertMarca
+End Catch
+END
+
+DECLARE @msg AS VARCHAR(100);
+EXEC Insertar_Marcas 'Nissan',@msg OUTPUT
+SELECT @msg AS msg

@@ -68,10 +68,12 @@
 
     });
     */
+
     /*
      * https://weblog.west-wind.com/posts/2012/may/08/passing-multiple-post-parameters-to-web-api-controller-methods
      * 
      */
+    /*
     $('#btnAddMarca').bind("click", GeneralPost);
     function GeneralPost() {
         var nuevaMarca = $('#txtMarcaDenominacion').val();
@@ -83,9 +85,6 @@
             data: JSON.stringify({
                 denominacion: nuevaMarca
             }),
-            crossDomain: true,
-            headers: { "Accept": "application/json", "Content-Type": "application/json" },
-            contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data, textStatus, xhr) {
                 console.log("Respuesta: ", data);
@@ -96,8 +95,36 @@
             }
         });
     }
+    */
     
+    $('#btnAddMarca').click(function () {
+        //debugger;
+        var nuevaMarca = $('#txtMarcaDenominacion').val();
+        var urlAPI = 'http://localhost:54704/api/marcas';
+        var dataNuevaMarca = {
+            id: 0,
+            denominacion: nuevaMarca
+        };
+        //debugger;
 
+        $.ajax({
+            url: urlAPI,
+            type: "POST",
+            dataType: 'json',
+            data: dataNuevaMarca,
+            success: function (data, textStatus, xhr) {
+                //debugger;
+                console.log("Data: " + JSON.stringify(data) + "\nXHR: " + JSON.stringify(xhr) + "\ntextStatus: " + JSON.stringify(textStatus));
+                alert("Marca " + data.datos + " insertada");
+                $('#txtMarcaDenominacion').val('');
+                GetMarcas();
+            },
+            error:function(xhr, textStatus, errorThrown) {
+                console.log(JSON.stringify(errorThrown) + "\n xhr: " + JSON.stringify(xhr) + "\n textStatus: " + JSON.stringify(textStatus));
+            }
+        });
+    });
+    
     $('#btnFindMarcaId').click(function () {
         var idMarca = $('#idMarcaDenominacionBuscar').val();
         var idMarcaInt = parseInt(idMarca);
@@ -127,9 +154,8 @@
                 });
             }
         });
-
     });
-
+        
     $('#btnCargarCoches').click(function () {
         var urlAPI = 'http://localhost:54704/api/marcas';
         $.get(urlAPI, function (respuesta, estado) {

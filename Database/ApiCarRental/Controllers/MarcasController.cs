@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Services;
 
 namespace ApiCarRental.Controllers
 {
@@ -60,19 +61,54 @@ namespace ApiCarRental.Controllers
             }
             resultado.totalElementos = data.Count;
             resultado.data = data;
-            // Db.Desconectar();
+            Db.Desconectar();
             return resultado;
         }
-
+        /* Esto funciona pero es antiguo ahora se utiliza HttpPost
         // POST: api/Marcas
-        public void Post([FromBody]string value,[FromBody] string value2)
+        [WebMethod]
+        public string Post([FromBody] Marca marca)
         {
-            string valor1 = value;
-            string valor2 = value2;
-            Console.WriteLine("Valores " + valor1 + "  " + valor2);
-            Console.ReadKey();
+            string denominacion1 = marca.denominacion;
+            string respuesta = "";
+            try {
+                Db.Conectar();
+                if (Db.EstaLaConexionAbierta()) {
+                     respuesta = Db.InsertarMarcas1(denominacion1);
+                }
+            } catch (Exception e) {
+                respuesta = "Error al conectar con la base de datos "+e.ToString();
+            }
+            Db.Desconectar();
+            return respuesta;
         }
+        */
 
+        [HttpPost]
+        public IHttpActionResult Post([FromBody] Marca marca)
+        {
+            RespuestaApi<Marca> respuesta = new RespuestaApi<Marca>();
+            respuesta.datos = marca.denominacion;
+            string mensaje = "";
+            int filaAfectadas;
+            try
+            {
+                Db.Conectar();
+                if (Db.EstaLaConexionAbierta())
+                {
+                    //mensaje = Db.InsertarMarcas1(marca);
+                    filaAfectadas = Db.InsertarMarcas1(marca);
+                }
+            }
+            catch (Exception e)
+            {
+                respuesta.error = "Error al conectar con la base de datos " + e.ToString();
+            }
+            Db.Desconectar();
+            //return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, mensaje)); ;
+            return Ok(respuesta);
+        }
+        
         // PUT: api/Marcas/5
         public void Put(int id, [FromBody]string value)
         {

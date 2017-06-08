@@ -83,7 +83,7 @@ namespace ApiCarRental.Controllers
             return resultado;
         }
 
-
+        /*
         // POST: api/Coches
         public RespuestaApi<Coche> Post([FromBody]string value)
         {
@@ -106,7 +106,7 @@ namespace ApiCarRental.Controllers
             resultado.data = data;
             Db.Desconectar();
             return resultado;
-        }
+        }*/
 
         // PUT: api/Coches/5
         public void Put(int id, [FromBody]string value)

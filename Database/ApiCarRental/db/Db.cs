@@ -94,6 +94,41 @@ namespace ApiCarRental
             return resultados;
         }
 
+        //internal static string InsertarMarcas1(Marca marca) {
+        internal static int InsertarMarcas1(Marca marca)
+        {
+            string respuesta = "";
+            int filaAfectadas;
+            try
+            {
+                //string procedimientoAEjecutar = "dbo.Insertar_Marcas";
+                string procedimientoAEjecutar = "dbo.Insertar_Marcas2";
+
+                // PREPARAMOS EL COMANDO PARA EJECUTAR EL PROCEDIMIENTO ALMACENADO
+                SqlCommand comando = new SqlCommand(procedimientoAEjecutar, conexion);
+                comando.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter parametroDenominacion = new SqlParameter();
+                parametroDenominacion.ParameterName = "denominacion";
+                parametroDenominacion.SqlDbType = SqlDbType.NVarChar;
+                parametroDenominacion.SqlValue = marca.denominacion;
+                comando.Parameters.Add(parametroDenominacion);
+                filaAfectadas = comando.ExecuteNonQuery();
+                //respuesta = "Marca " + marca.denominacion + " insertada";
+            }
+            catch (SqlException ex)
+            {
+                respuesta = "Error al insertar: " + ex.ToString();
+                filaAfectadas = -1;
+            }
+            catch (Exception ex)
+            {
+                respuesta = "Error al insertar: " + respuesta + " " + ex.ToString();
+                filaAfectadas = -1;
+            }
+            return filaAfectadas;
+        }
+
         public static List<Coche> DameListaCochesConProcedimientoAlmacenado() {
             // CREO EL OBJETO EN EL QUE SE DEVOLVERÁN LOS RESULTADOS
             List<Coche> resultados = new List<Coche>();
@@ -247,7 +282,7 @@ namespace ApiCarRental
                 coche.marca.denominacion = reader["denominacionMarca"].ToString();
                 coche.tipoCombustible = new TipoCombustible();
                 coche.tipoCombustible.id = (long)reader["idTipoCombustible"];
-                //  coche.tipoCombustible.denominacion = reader["denominacionTipoCombustible"].ToString();
+                coche.tipoCombustible.denominacion = reader["denominacionTipoCombustible"].ToString();
                 // AÑADO EL COCHE A LA LISTA DE RESULTADOS
                 resultados.Add(coche);
             }
@@ -356,4 +391,5 @@ namespace ApiCarRental
             return resultados;
         }
     }
+    
 }

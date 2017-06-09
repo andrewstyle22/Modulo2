@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-     
      /*
      return false from within a jQuery event handler is effectively the same as calling both 
      e.preventDefault and e.stopPropagation on the passed jQuery.Event object.
@@ -24,6 +23,42 @@
 
                 var relleno = '';
 
+                relleno += '<table border="1">';
+                relleno += '    <tr>';
+                relleno += '        <td>Id.</td>'
+                relleno += '        <td>Denominación</td>'
+                relleno += '        <td>Acciones</td>'
+                relleno += '    </tr>';
+                $.each(respuesta.data, function (indice, elemento) {
+
+                    relleno += '    <tr>';
+                    relleno += '        <td>' + elemento.id + '</td>';
+                    relleno += '        <td>' + elemento.denominacion + '</td>';
+                    relleno += '        <td>';
+                    relleno += '            <button data-id="' + elemento.id + '" id="btnEliminar">X</button>';
+                    relleno += '            <button id="btnEditar">Editar</button>';
+                    relleno += '        </td>';
+                    relleno += '    </tr>';
+
+                });
+                relleno += '</table>';
+                $('#resultados').append(relleno);
+            }
+        });
+    }
+    $('#btnCargarMarcas').click(function () {
+        GetMarcas();
+        /*
+        var urlAPI = 'http://localhost:54704/api/marcas';
+        $.get(urlAPI, function (respuesta, estado) {
+            // console.log(respuesta);
+            $('#resultados').html('');
+            // COMPRUEBO EL ESTADO DE LA LLAMADA
+            if (estado === 'success') {
+                // SI LLEGO HASTA AQUÍ QUIERE DECIR
+
+                var relleno = '';
+
                 $.each(respuesta.data, function (indice, elemento) {
 
                     relleno = '<ul>';
@@ -36,7 +71,9 @@
                 });
             }
         });
-    }
+        */
+    });
+
     /*
     $('#btnAddMarca').click(function () {
       //  debugger;
@@ -156,27 +193,34 @@
         });
     });
         
-    $('#btnCargarCoches').click(function () {
-        var urlAPI = 'http://localhost:54704/api/marcas';
-        $.get(urlAPI, function (respuesta, estado) {
-            // console.log(respuesta);
-            $('#resultados').html('');
-            // COMPRUEBO EL ESTADO DE LA LLAMADA
-            if (estado === 'success') {
-                // SI LLEGO HASTA AQUÍ QUIERE DECIR
+    $('#resultados').on('click', '#btnEditar', function () {
+        var idMarca = $(this).attr('data-id');
+        var idMarcaInt = parseInt(idMarca);
+        var urlAPI = 'http://localhost:54704/api/marcas/' + idMarcaInt;
+            type: "PUT",
+            dataType: 'json',
+            data: dataNuevaMarca,
+            success: function (respuesta) {
+                GetMarcas();
+            },
+            error: function (respuesta) {
+                console.log(respuesta);
+            }
+        });
+    });
 
-                var relleno = '';
-
-                $.each(respuesta.data, function (indice, elemento) {
-
-                    relleno = '<ul>';
-                    relleno += '    <li>';
-                    relleno += elemento.denominacion;
-                    relleno += '    </li>';
-                    relleno += '</ul>';
-
-                    $('#resultados').append(relleno);
-                });
+    $('#resultados').on('click', '#btnEliminar', function () {
+        var idMarca = $(this).attr('data-id');
+        var idMarcaInt = parseInt(idMarca);
+        var urlAPI = 'http://localhost:54704/api/marcas/' + idMarcaInt;
+        $.ajax({
+            url: urlAPI,
+            type: "DELETE",
+            success: function (respuesta) {
+                GetMarcas();
+            },
+            error: function (respuesta) {
+                console.log(respuesta);
             }
         });
     });

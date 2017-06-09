@@ -307,7 +307,6 @@ AS
 BEGIN
 	INSERT [dbo].[Marcas] ( [denominacion]) VALUES (@denominacion)
 END
-*/
 
 create PROCEDURE Insertar_Tipo_Combustible
 	@denominacion nvarchar(50)
@@ -317,3 +316,27 @@ BEGIN
 END
 
 exec Insertar_Tipo_Combustible 'cerveza';
+
+-- PROCEDIMIENTO PARA ELIMINAR UNA MARCA
+CREATE PROCEDURE EliminarMarca
+    @id bigint
+AS
+BEGIN
+    DELETE FROM Marcas WHERE id = @id 
+END
+
+exec EliminarMarca 17;
+
+
+create procedure Actualizarmarca
+	@id bigint,
+	@denominacion nvarchar(50)
+as
+begin
+	UPDATE Marcas SET denominacion = @denominacion where id = @id
+end;
+
+exec Actualizarmarca 13, 'Honda';
+
+*/
+

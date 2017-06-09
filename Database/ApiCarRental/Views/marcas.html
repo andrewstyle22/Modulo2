@@ -4,11 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Marcas</title>
 	<meta charset="utf-8" />
+
 </head>
 <body>
     Relación de marcas
     <form method="get">
-        <button id="btnCargarCoches">Cargar Marcas </button>
+        <button id="btnCargarMarcas">Cargar Marcas </button>
     </form>
     <div id="resultados">
 
@@ -16,6 +17,7 @@
     <form method="post">
         <input type="text" id="txtMarcaDenominacion" value="" placeholder="nombre de la nueva marca" />
         <button id="btnAddMarca">Crear marca </button>
+        <img id="imgloading" src="./imagenes/loading.gif" alt="gif" />
     </form>
     <form method="get">
         <input type="text" id="idMarcaDenominacionBuscar" value="" placeholder="Id de la marca" />
@@ -25,10 +27,9 @@
 
     </div>
 
-
     <!-- AÑADO LA REFERENCIA PARA PODER USAR JQUERY -->
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js"></script>
     <!-- AÑADO LA REFERENCIA A MIS PROPIOS FICHEROS DE JAVASCRIPT -->
-    <script src="./js/marcas.js?version=2.9.2"></script>
+    <script src="./js/marcas.js?version=2.9.8"></script>
 </body>
 </html>

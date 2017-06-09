@@ -108,15 +108,55 @@ namespace ApiCarRental.Controllers
             //return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, mensaje)); ;
             return Ok(respuesta);
         }
-        
+
         // PUT: api/Marcas/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public IHttpActionResult Put(int id, [FromBody]Marca marca)
         {
+            RespuestaApi<Marca> respuesta = new RespuestaApi<Marca>();
+            respuesta.error = "";
+            int filasAfectadas = 0;
+            try
+            {
+                Db.Conectar();
+                if (Db.EstaLaConexionAbierta())
+                {
+                    filasAfectadas = Db.ActualizarMarca(id, marca);
+                }
+                respuesta.totalElementos = filasAfectadas;
+                Db.Desconectar();
+            }
+            catch (Exception ex)
+            {
+                respuesta.totalElementos = 0;
+                respuesta.error = "Error al eliminar la marca";
+            }
+            return Ok(respuesta);
         }
 
         // DELETE: api/Marcas/5
-        public void Delete(int id)
+        [HttpDelete]
+        public IHttpActionResult Delete(long id)
         {
+            RespuestaApi<Marca> respuesta = new RespuestaApi<Marca>();
+            respuesta.error = "";
+            int filasAfectadas = 0;
+            try
+            {
+                Db.Conectar();
+                if (Db.EstaLaConexionAbierta())
+                {
+                    filasAfectadas = Db.EliminarMarca(id);
+                }
+                respuesta.totalElementos = filasAfectadas;
+                Db.Desconectar();
+            }
+            catch (Exception ex)
+            {
+                respuesta.totalElementos = 0;
+                respuesta.error = "Error al eliminar la marca";
+            }
+            return Ok(respuesta);
         }
     }
 }

@@ -197,6 +197,12 @@
         var idMarca = $(this).attr('data-id');
         var idMarcaInt = parseInt(idMarca);
         var urlAPI = 'http://localhost:54704/api/marcas/' + idMarcaInt;
+        var dataNuevaMarca = {
+            denominacion: $('#txtNuevaMarca').val()
+        };
+
+        $.ajax({
+            url: urlAPI + '/' + idMarcaInt,
             type: "PUT",
             dataType: 'json',
             data: dataNuevaMarca,

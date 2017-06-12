@@ -141,7 +141,7 @@ namespace ApiCarRental
 
 
             SqlParameter parametroDenominacion = new SqlParameter();
-            parametroDenominacion.ParameterName = "id";
+            parametroDenominacion.ParameterName = "denominacion";
             parametroDenominacion.SqlDbType = SqlDbType.NVarChar;
             parametroDenominacion.SqlValue = marca.denominacion;
 

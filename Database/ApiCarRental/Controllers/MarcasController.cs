@@ -154,7 +154,7 @@ namespace ApiCarRental.Controllers
             catch (Exception ex)
             {
                 respuesta.totalElementos = 0;
-                respuesta.error = "Error al eliminar la marca";
+                respuesta.error = "Error al eliminar la marca "+ex.ToString();
             }
             return Ok(respuesta);
         }

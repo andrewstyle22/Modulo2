@@ -388,7 +388,6 @@ namespace ApiCarRental
             return resultados;
         }
 
-
         public static List<Marca> DameListaMarcasPorId(int id)
         {
             // CREO EL OBJETO EN EL QUE SE DEVOLVERÁN LOS RESULTADOS
@@ -418,7 +417,6 @@ namespace ApiCarRental
             reader.Close();
             return resultados;
         }
-
 
         internal static List<TipoCombustible> DameListaTipoCombustibles()
         {
@@ -468,5 +466,4 @@ namespace ApiCarRental
             return resultados;
         }
     }
-    
 }
